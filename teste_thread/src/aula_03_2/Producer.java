@@ -1,19 +1,18 @@
 package aula_03_2;
 
-import java.util.Random;
-
-import aula_03_1.SharedObject;
-
 public class Producer implements Runnable{
 	
-	private SharedObject shared;
+	private Pilha pilha;
 	
-	Producer (SharedObject shared){ this.shared = shared;}
+	private char alfabeto[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'};
+	
+	Producer (Pilha pilha){ this.pilha = pilha;}
 	
 	@Override
 	public void run() {
-		while(true) {
-			System.out.println(Pilha.pop());
+		
+		for(char letra :alfabeto) {
+			pilha.push(letra);
 		}
 	}
 }

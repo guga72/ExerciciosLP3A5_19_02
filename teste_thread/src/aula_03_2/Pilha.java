@@ -2,17 +2,17 @@ package aula_03_2;
 
 public class Pilha {
 
-	public static char alfabeto[];
-	static int cursor = 0;
+	public static char alfabeto[] = {' ',' ',' ',' ',' ',' '};
+	private int cursor = 0;
 	
 	public synchronized void push(char letra) {
 		try {
-			if(alfabeto.length <= 6) {
-				alfabeto[cursor] = letra;
+			while(cursor == 6) {
+				wait();
 			}
-			else {
-			  wait();	
-			}
+			alfabeto[cursor] = letra;
+			this.cursor ++;
+			notifyAll();
 		} catch (InterruptedException e) {
 			
 		}
@@ -20,16 +20,15 @@ public class Pilha {
 	
 	public synchronized char pop() {
 		try {
-			if(alfabeto.length >= 1) {
+			while(cursor == 0) {
 				wait();
 			}
-			else {
-				char letra = alfabeto[alfabeto.length];
-				cursor --;
-				return letra;	
-			}
+				char letra = alfabeto[alfabeto.length - 1];
+				this.cursor --;
+				notifyAll();
+				return letra;
 		}catch (InterruptedException e) {
+			return 0;
 		}
-		return 0;
     }
 }
