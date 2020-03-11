@@ -2,42 +2,33 @@ package aula_04_1;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.Socket;
 
 public class Cliente {
 
-	public static void main(String args[]) throws Exception {
-		
-		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+	public static void main(String args[]) {
 
-		DatagramSocket clientSocket = new DatagramSocket();
+		try {
+			// conecta ao servidor
+			Socket cliente = new Socket("127.0.0.1",18981);
+			System.out.println("O cliente se conectou ao servidor!");
 
-		String servidor = "localhost";
-		int porta = 9876;
+			// prepara para a leitura da linha de comando
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(System.in)
+					);
 
-		InetAddress IPAddress = InetAddress.getByName(servidor);
+			/* inserir o resto do programa aqui */
 
-		byte[] sendData = new byte[1024];
-		byte[] receiveData = new byte[1024];
-		while (true) {
-			System.out.println("Digite o texto a ser enviado ao servidor: ");
-			String sentence = inFromUser.readLine();
-			sendData = sentence.getBytes();
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, porta);
+			// fecha tudo
+			cliente.close();
 
-			System.out.println("Enviando pacote UDP para " + servidor + ":" + porta);
-			clientSocket.send(sendPacket);
+		} catch (Exception e) {
 
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			// em caso de erro
+			System.out.println("Ocorreu um erro na conexão");
+			e.printStackTrace();
 
-			clientSocket.receive(receivePacket);
-			System.out.println("Pacote UDP recebido...");
-
-			String modifiedSentence = new String(receivePacket.getData());
-
-			System.out.println("Texto recebido do servidor:" + modifiedSentence);
 		}
 	}
 }
