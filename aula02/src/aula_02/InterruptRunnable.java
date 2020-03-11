@@ -1,4 +1,4 @@
-package teste_thread;
+package aula_02;
 
 public class InterruptRunnable implements Runnable{
 	
